@@ -19,7 +19,7 @@ struct EthArpPacket final {
 void usage() 
 {
     printf("syntax : arp-spoof <interface> <sender ip 1> <target ip 1> [<sender ip 2> <target ip 2>...]\n");
-    printf("sample : arp-spoof wlan0 192.168.10.2 192.168.10.1 192.168.10.1 192.168.10.2n0\n");
+    printf("sample : arp-spoof wlan0 192.168.10.2 192.168.10.1 192.168.10.1 192.168.10.2\n");
 }
 
 int arp_send_packet(pcap_t* handle, Mac dmac, Mac smac, Mac tmac, Ip sip, Ip tip, uint16_t op)
