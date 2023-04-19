@@ -316,6 +316,8 @@ int main(int argc, char* argv[])
 
     free(sender_ip);
     free(target_ip);
+    free(sender_mac);
+    free(target_mac);
     pcap_close(handle);
 
     return 0;
