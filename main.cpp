@@ -175,15 +175,15 @@ int parse_packet(const u_char *packet, int packet_len, Mac sender_mac, Mac targe
 int relay_packet(pcap_t *handle, const u_char *packet, int packet_len, Mac my_mac, Mac target_mac)
 {
     EthHdr* eth_hdr = (EthHdr*)packet;
-    Ip* sip = (Ip*)((char*)eth_hdr + 26);
-    Ip* dip = (Ip*)((char*)eth_hdr + 30);
+    Ip sip = Ip(htonl(*(uint32_t*)((char*)eth_hdr + 26)));
+    Ip dip = Ip(htonl(*(uint32_t*)((char*)eth_hdr + 30)));
     int res = 0;
 
     std::cout << "Spoofed packet" << std::endl;
     std::cout << "EthHdr->smac(): " << std::string(eth_hdr->smac()) << std::endl;
     std::cout << "EthHdr->dmac(): " << std::string(eth_hdr->dmac()) << std::endl;
-    std::cout << "Ipv4->sip: " << std::string(*sip) << std::endl;
-    std::cout << "Ipv4->dip: " << std::string(*dip) << std::endl;
+    std::cout << "Ipv4->sip: " << std::string(sip) << std::endl;
+    std::cout << "Ipv4->dip: " << std::string(dip) << std::endl;
 
     eth_hdr->smac_ = my_mac;
     eth_hdr->dmac_ = target_mac;
@@ -191,8 +191,8 @@ int relay_packet(pcap_t *handle, const u_char *packet, int packet_len, Mac my_ma
     std::cout << "Relay packet" << std::endl;
     std::cout << "EthHdr->smac(): " << std::string(eth_hdr->smac()) << std::endl;
     std::cout << "EthHdr->dmac(): " << std::string(eth_hdr->dmac()) << std::endl;
-    std::cout << "Ipv4->sip: " << std::string(*sip) << std::endl;
-    std::cout << "Ipv4->dip: " << std::string(*dip) << std::endl;
+    std::cout << "Ipv4->sip: " << std::string(sip) << std::endl;
+    std::cout << "Ipv4->dip: " << std::string(dip) << std::endl;
 
     res = pcap_sendpacket(handle, packet, packet_len);
     if (res != 0) {
@@ -214,7 +214,6 @@ int main(int argc, char* argv[])
     Mac*                target_mac;
     struct pcap_pkthdr* header;
     const u_char*       packet;
-    struct ArpHdr*      arp_hdr;
     int                 type;
     int                 res;
 
